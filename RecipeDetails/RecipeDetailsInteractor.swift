@@ -6,11 +6,15 @@
 //  
 //
 
-import Foundation
+import Models
 
 final class RecipeDetailsInteractor {
     weak var output: RecipeDetailsInteractorOutput?
+    var recipe: Recipe!
 }
 
 extension RecipeDetailsInteractor: RecipeDetailsInteractorInput {
+    func requestData() {
+        output?.didProvidedRecipe(recipe)
+    }
 }

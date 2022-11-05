@@ -7,12 +7,27 @@
 //
 
 import UIKit
+import CommonUI
+import Models
+import Resources
 
 final class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Private Properties
     
     private let output: RecipeDetailsViewOutput
+    
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private let recipeImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     
     // MARK: - Init
     
@@ -31,9 +46,22 @@ final class RecipeDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupView()
+        output.requestData()
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setupView() {
+        navigationItem.largeTitleDisplayMode = .never
         
+        view.backgroundColor = Colors.systemBackground
     }
 }
 
 extension RecipeDetailsViewController: RecipeDetailsViewInput {
+    func configure(with data: Recipe) {
+        title = data.label
+        recipeImageView.loadImage(for: data.images?.regular?.url)
+    }
 }

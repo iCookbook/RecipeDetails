@@ -6,7 +6,7 @@
 //  
 //
 
-import Foundation
+import Models
 
 final class RecipeDetailsPresenter {
     weak var view: RecipeDetailsViewInput?
@@ -29,7 +29,13 @@ extension RecipeDetailsPresenter: RecipeDetailsModuleInput {
 }
 
 extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
+    func requestData() {
+        interactor.requestData()
+    }
 }
 
 extension RecipeDetailsPresenter: RecipeDetailsInteractorOutput {
+    func didProvidedRecipe(_ recipe: Recipe) {
+        view?.configure(with: recipe)
+    }
 }
