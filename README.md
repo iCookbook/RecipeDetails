@@ -1,0 +1,2 @@
+# RecipeDetails
+'RecipeDetails' module
