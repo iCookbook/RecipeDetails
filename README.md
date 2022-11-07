@@ -1,10 +1,12 @@
-# Recipe Details module
+# "Recipe Details" module
 
 Module that is shown after user tapps on a recipe
 
-## The begining
+## To set up
 
-To start, it requires `Recipe` instance that should be provided inside `RecipeDetailsContext` structure.
+This module could be opened in [Discover](https://github.com/iCookbook/Discover), [Search](https://github.com/iCookbook/Search) and [Personal](https://github.com/iCookbook/Personal) modules. 
+
+Tt requires `Recipe` instance that must be provided inside `RecipeDetailsContext`.
 
 ## Dependencies
 
@@ -16,3 +18,5 @@ This module has 4 dependencies:
 - `Resources` for access to resources of the application
 - `Models` to use `Recipe` model
 - `Persistence` to save favourites recipes
+
+## Screenshots
