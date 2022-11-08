@@ -10,6 +10,7 @@ import UIKit
 import CommonUI
 import Models
 import Resources
+import Persistence
 
 final class RecipeDetailsViewController: UIViewController {
     
@@ -30,6 +31,24 @@ final class RecipeDetailsViewController: UIViewController {
         return view
     }()
     
+    private var favouriteRecipeButtonPressed = false
+    
+    private lazy var favouriteRecipeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(Resources.Images.Discover.heart, for: .normal)
+        button.addTarget(self, action: #selector(favouriteButtonTapped), for: .touchUpInside)
+        button.backgroundColor = Colors.systemBackground
+        button.layer.cornerRadius = 18
+        button.layer.zPosition = 1
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowRadius = 2.0
+        button.layer.shadowOpacity = 0.6
+        button.layer.shadowOffset = CGSize(width: 0.0, height: 0.5)
+        button.layer.masksToBounds = false
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let recipeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -44,7 +63,9 @@ final class RecipeDetailsViewController: UIViewController {
         return view
     }()
     
-    public let recipeDescriptionLabel: UILabel = {
+    private let titleDescriptionLabel = TitleLabel(text: Texts.RecipeDetails.titleDescription)
+    
+    private let recipeDescriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.body()
         label.numberOfLines = 0
@@ -57,16 +78,20 @@ final class RecipeDetailsViewController: UIViewController {
     private lazy var nutrientsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 120, height: 80)
+        layout.itemSize = CGSize(width: 100, height: 70)
+        layout.estimatedItemSize = CGSize(width: 100, height: 70)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.allowsSelection = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
         collectionView.register(NutrientCollectionViewCell.self, forCellWithReuseIdentifier: NutrientCollectionViewCell.identifier)
+        collectionView.contentInset = UIEdgeInsets(top: 12, left: 18, bottom: 12, right: 18)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
+    
+    private let titleIngredientsLabel = TitleLabel(text: Texts.RecipeDetails.titleIngredients)
     
     private var ingredientsTableViewDataSource: [Ingredient] = []
     
@@ -99,6 +124,22 @@ final class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Private Methods
     
+    @objc private func favouriteButtonTapped() {
+        favouriteRecipeButtonPressed.toggle()
+        UIView.transition(with: favouriteRecipeButton, duration: 0.15, options: .transitionCrossDissolve, animations: { [unowned self] in
+            changeFavouriteButtonImage()
+        })
+        output.favouriteButtonTapped(flag: favouriteRecipeButtonPressed)
+    }
+    
+    private func changeFavouriteButtonImage() {
+        if favouriteRecipeButtonPressed {
+            favouriteRecipeButton.setImage(Resources.Images.Discover.heart, for: .normal)
+        } else {
+            favouriteRecipeButton.setImage(Resources.Images.Discover.filledHeart, for: .normal)
+        }
+    }
+    
     private func setupView() {
         navigationItem.largeTitleDisplayMode = .never
         view.backgroundColor = Colors.systemBackground
@@ -109,8 +150,12 @@ final class RecipeDetailsViewController: UIViewController {
         topView.addSubview(recipeImageView)
         
         scrollView.addSubview(contentView)
+        contentView.addSubview(favouriteRecipeButton)
+        contentView.addSubview(titleDescriptionLabel)
         contentView.addSubview(recipeDescriptionLabel)
         contentView.addSubview(nutrientsCollectionView)
+        
+        contentView.addSubview(titleIngredientsLabel)
         contentView.addSubview(ingredientsTableView)
         
         NSLayoutConstraint.activate([
@@ -125,6 +170,11 @@ final class RecipeDetailsViewController: UIViewController {
             topView.bottomAnchor.constraint(equalTo: contentView.topAnchor),
             topView.widthAnchor.constraint(equalTo: view.widthAnchor),
             
+            favouriteRecipeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -16),
+            favouriteRecipeButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -40),
+            favouriteRecipeButton.heightAnchor.constraint(equalToConstant: 36),
+            favouriteRecipeButton.widthAnchor.constraint(equalToConstant: 36),
+            
             recipeImageView.leadingAnchor.constraint(equalTo: topView.leadingAnchor),
             recipeImageView.trailingAnchor.constraint(equalTo: topView.trailingAnchor),
             recipeImageView.topAnchor.constraint(equalTo: topView.topAnchor),
@@ -136,17 +186,25 @@ final class RecipeDetailsViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
             
-            recipeDescriptionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 26),
-            recipeDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            recipeDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            titleDescriptionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            titleDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            titleDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
             
-            nutrientsCollectionView.topAnchor.constraint(equalTo: recipeDescriptionLabel.bottomAnchor, constant: 20),
+            recipeDescriptionLabel.topAnchor.constraint(equalTo: titleDescriptionLabel.bottomAnchor, constant: 10),
+            recipeDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            recipeDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            
+            nutrientsCollectionView.topAnchor.constraint(equalTo: recipeDescriptionLabel.bottomAnchor),
             nutrientsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             nutrientsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-//            nutrientsCollectionView.bottomAnchor.constraint(equalTo: ingredientsTableView.topAnchor, constant: 20),
-//            nutrientsCollectionView.heightAnchor.constraint(equalToConstant: 100),
+            nutrientsCollectionView.bottomAnchor.constraint(equalTo: titleIngredientsLabel.topAnchor),
+            nutrientsCollectionView.heightAnchor.constraint(equalToConstant: 112),
             
-            ingredientsTableView.topAnchor.constraint(equalTo: recipeDescriptionLabel.bottomAnchor),
+            titleIngredientsLabel.topAnchor.constraint(equalTo: nutrientsCollectionView.bottomAnchor),
+            titleIngredientsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            titleIngredientsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            
+            ingredientsTableView.topAnchor.constraint(equalTo: titleIngredientsLabel.bottomAnchor, constant: 6),
             ingredientsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             ingredientsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             ingredientsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
@@ -155,16 +213,22 @@ final class RecipeDetailsViewController: UIViewController {
 }
 
 extension RecipeDetailsViewController: RecipeDetailsViewInput {
-    func configure(with data: Recipe) {
+    func configure(with data: Models.Recipe) {
         title = data.label
         recipeImageView.loadImage(for: data.images?.regular?.url)
         
-        nutrientsCollectionViewDataSource = data.digest ?? []
+        nutrientsCollectionViewDataSource = Array(data.digest?[0..<4] ?? [])
         nutrientsCollectionView.reloadData()
         ingredientsTableViewDataSource = data.ingredients ?? []
         ingredientsTableView.reloadData()
         
         recipeDescriptionLabel.text = "Bring colour to your dinner table with our \(data.label ?? Texts.Discover.mockRecipeTitle). Packed with nutrients, it's a satisfying veggie lunch or supper for the family"
+        
+        if UserDefaults.favouriteRecipes.contains(data) {
+            favouriteRecipeButton.setImage(Resources.Images.Discover.filledHeart, for: .normal)
+        } else {
+            favouriteRecipeButton.setImage(Resources.Images.Discover.heart, for: .normal)
+        }
     }
 }
 
@@ -181,7 +245,7 @@ extension RecipeDetailsViewController: UITableViewDataSource {
             fatalError("Could not cast table view cell to `IngredientTableViewCell` for indexPath: \(indexPath)")
         }
         let ingredient = ingredientsTableViewDataSource[indexPath.row]
-        cell.configure(name: ingredient.food?.capitalized, measure: "\(NSNumber(floatLiteral: ingredient.quantity ?? 1).stringValue) \(ingredient.measure ?? "tbsp")")
+        cell.configure(name: ingredient.food?.capitalized, quantity: ingredient.quantity, measure: ingredient.measure)
         return cell
     }
 }
@@ -199,7 +263,7 @@ extension RecipeDetailsViewController: UICollectionViewDataSource {
             fatalError("Could not cast collection view cell to `NutrientCollectionViewCell` for indexPath: \(indexPath)")
         }
         let nutrient = nutrientsCollectionViewDataSource[indexPath.row]
-        cell.configure(name: nutrient.label, quantity: String(nutrient.total ?? 0.0))
+        cell.configure(name: nutrient.label, quantity: nutrient.total)
         return cell
     }
 }

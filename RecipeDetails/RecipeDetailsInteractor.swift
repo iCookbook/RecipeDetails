@@ -7,14 +7,25 @@
 //
 
 import Models
+import Persistence
 
 final class RecipeDetailsInteractor {
     weak var output: RecipeDetailsInteractorOutput?
-    var recipe: Recipe!
+    var recipe: Models.Recipe!
 }
 
 extension RecipeDetailsInteractor: RecipeDetailsInteractorInput {
     func requestData() {
         output?.didProvidedRecipe(recipe)
+    }
+    
+    func addRecipeToFavourites() {
+        UserDefaults.favouriteRecipes.append(recipe)
+    }
+    
+    func removeRecipeFromFavourites() {
+        if let index = UserDefaults.favouriteRecipes.firstIndex(of: recipe) {
+            UserDefaults.favouriteRecipes.remove(at: index)
+        }
     }
 }
