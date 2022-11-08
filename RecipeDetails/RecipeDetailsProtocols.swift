@@ -21,10 +21,13 @@ protocol RecipeDetailsViewInput: AnyObject {
 
 protocol RecipeDetailsViewOutput: AnyObject {
     func requestData()
+    func favouriteButtonTapped(flag: Bool)
 }
 
 protocol RecipeDetailsInteractorInput: AnyObject {
     func requestData()
+    func addRecipeToFavourites()
+    func removeRecipeFromFavourites()
 }
 
 protocol RecipeDetailsInteractorOutput: AnyObject {

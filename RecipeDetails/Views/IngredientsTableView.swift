@@ -20,6 +20,7 @@ final class IngredientsTableView: UITableView {
         register(IngredientTableViewCell.self, forCellReuseIdentifier: IngredientTableViewCell.identifier)
         allowsSelection = false
         isScrollEnabled = false
+        contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         translatesAutoresizingMaskIntoConstraints = false
     }
     

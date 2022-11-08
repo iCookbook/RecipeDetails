@@ -14,7 +14,7 @@ final class IngredientTableViewCell: UITableViewCell {
     
     private let ingredientNameLabel: UILabel = {
         let label = UILabel()
-        label.font = Fonts.body()
+        label.font = Fonts.medium()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -59,8 +59,9 @@ final class IngredientTableViewCell: UITableViewCell {
     
     // MARK: - Public Methods
     
-    public func configure(name: String?, measure: String?) {
+    public func configure(name: String?, quantity: Double?, measure: String?) {
         ingredientNameLabel.text = name
-        ingredientMeasureLabel.text = measure
+        let roundedQuantity: Double = round((quantity ?? 1.0) * 100) / 100
+        ingredientMeasureLabel.text = "\(NSNumber(floatLiteral: roundedQuantity).stringValue) \(measure ?? "tbsp")"
     }
 }

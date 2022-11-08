@@ -14,12 +14,13 @@ final class NutrientCollectionViewCell: UICollectionViewCell {
     
     private let nutrientNameLabel: UILabel = {
         let label = UILabel()
+        label.font = Fonts.smallBody()
         return label
     }()
     
     private let nutrientQuantityLabel: UILabel = {
         let label = UILabel()
-        label.font = Fonts.body()
+        label.font = Fonts.headline()
         return label
     }()
     
@@ -27,7 +28,7 @@ final class NutrientCollectionViewCell: UICollectionViewCell {
         let stackView = UIStackView(arrangedSubviews: [nutrientQuantityLabel, nutrientNameLabel])
         stackView.alignment = .center
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = 4
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -47,6 +48,8 @@ final class NutrientCollectionViewCell: UICollectionViewCell {
     // MARK: - Private Methods
     
     private func setupView() {
+        contentView.backgroundColor = Colors.systemGroupedBackground
+        contentView.layer.cornerRadius = 12
         contentView.addSubview(mainStackView)
         
         NSLayoutConstraint.activate([
@@ -58,8 +61,8 @@ final class NutrientCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Public Methods
     
-    public func configure(name: String?, quantity: String?) {
-        nutrientQuantityLabel.text = quantity
-        nutrientNameLabel.text = name
+    public func configure(name: String?, quantity: Double?) {
+        nutrientQuantityLabel.text = String(Int(quantity ?? 10.0))
+        nutrientNameLabel.text = name?.localized
     }
 }
