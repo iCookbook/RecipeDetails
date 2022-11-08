@@ -11,6 +11,8 @@ import Resources
 
 final class WebViewController: UIViewController {
     
+    // MARK: - Private Properties
+    
     private let url: URL
     
     private lazy var webView: WKWebView = {
@@ -40,6 +42,8 @@ final class WebViewController: UIViewController {
     private lazy var safariButton = UIBarButtonItem(image: Images.RecipeDetails.safari, style: .plain, target: self, action: #selector(safariAction))
     private lazy var spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
     
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,6 +54,8 @@ final class WebViewController: UIViewController {
         setupView()
     }
     
+    // MARK: - Init
+    
     init(url: URL) {
         self.url = url
         super.init(nibName: nil, bundle: nil)
@@ -58,6 +64,8 @@ final class WebViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Private Methods
     
     private func loadRequest(url: URL) {
         let urlRequest = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 5.0)
@@ -87,29 +95,29 @@ final class WebViewController: UIViewController {
 
 // MARK: - UIBarButtonItems @objc methods
 
-extension WebViewController {
+private extension WebViewController {
     
-    @objc private func backwardAction() {
+    @objc func backwardAction() {
         guard webView.canGoBack else { return }
         webView.goBack()
     }
     
-    @objc private func forwardAction() {
+    @objc func forwardAction() {
         guard webView.canGoForward else { return }
         webView.goForward()
     }
     
-    @objc private func shareAction() {
+    @objc func shareAction() {
         let activityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         activityController.excludedActivityTypes = [.markupAsPDF, .openInIBooks, .print, .saveToCameraRoll, .assignToContact]
         present(activityController, animated: true, completion: nil)
     }
     
-    @objc private func safariAction() {
+    @objc func safariAction() {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
-    @objc private func reloadPage() {
+    @objc func reloadPage() {
         webView.reload()
     }
 }

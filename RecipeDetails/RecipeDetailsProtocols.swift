@@ -16,7 +16,7 @@ public protocol RecipeDetailsModuleOutput: AnyObject {
 }
 
 protocol RecipeDetailsViewInput: AnyObject {
-    func configure(with data: Recipe)
+    func configure(with data: Recipe, isFavourite: Bool)
 }
 
 protocol RecipeDetailsViewOutput: AnyObject {
@@ -26,14 +26,14 @@ protocol RecipeDetailsViewOutput: AnyObject {
 }
 
 protocol RecipeDetailsInteractorInput: AnyObject {
-    func requestData()
+    func provideData()
     func addRecipeToFavourites()
     func removeRecipeFromFavourites()
-    func requestRecipeSource()
+    func provideRecipeSource()
 }
 
 protocol RecipeDetailsInteractorOutput: AnyObject {
-    func didProvidedRecipe(_ recipe: Recipe)
+    func didProvidedRecipe(_ recipe: Recipe, isFavourite: Bool)
     func didProvidedRecipeSource(urlString: String)
 }
 

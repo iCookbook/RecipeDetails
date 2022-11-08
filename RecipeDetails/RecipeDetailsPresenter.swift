@@ -31,7 +31,7 @@ extension RecipeDetailsPresenter: RecipeDetailsModuleInput {
 extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
     
     func requestData() {
-        interactor.requestData()
+        interactor.provideData()
     }
     
     /// Handles tapping on the favourite button.
@@ -46,17 +46,21 @@ extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
         }
     }
     
+    /// Asks interactor for link to open in web.
     func webRecipeButtonTapped() {
-        interactor.requestRecipeSource()
+        interactor.provideRecipeSource()
     }
 }
 
 extension RecipeDetailsPresenter: RecipeDetailsInteractorOutput {
-    func didProvidedRecipe(_ recipe: Recipe) {
-        view?.configure(with: recipe)
+    func didProvidedRecipe(_ recipe: Recipe, isFavourite: Bool) {
+        view?.configure(with: recipe, isFavourite: isFavourite)
     }
     
+    /// Provides the link from interactor.
+    /// - Parameter urlString: link to the recipe.
     func didProvidedRecipeSource(urlString: String) {
+        
         guard let url = URL(string: urlString) else {
             // TODO: Implement opening alert
             return

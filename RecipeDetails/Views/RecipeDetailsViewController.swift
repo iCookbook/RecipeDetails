@@ -140,14 +140,17 @@ final class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Private Methods
     
+    /// Handles tapping on `favouriteRecipeButton`.
     @objc private func favouriteButtonTapped() {
         favouriteRecipeButtonPressed.toggle()
+        // animating tapping
         UIView.transition(with: favouriteRecipeButton, duration: 0.15, options: .transitionCrossDissolve, animations: { [unowned self] in
             changeFavouriteButtonImage()
         })
         output.favouriteButtonTapped(flag: favouriteRecipeButtonPressed)
     }
     
+    /// Changes favourite button's image depending on whether is it pressed or not.
     private func changeFavouriteButtonImage() {
         if favouriteRecipeButtonPressed {
             favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.heart, for: .normal)
@@ -238,10 +241,13 @@ final class RecipeDetailsViewController: UIViewController {
 }
 
 extension RecipeDetailsViewController: RecipeDetailsViewInput {
-    func configure(with data: Models.Recipe) {
+    /// Fills in views with data.
+    /// - Parameter data: data to fill in.
+    func configure(with data: Models.Recipe, isFavourite: Bool) {
         title = data.label
         recipeImageView.loadImage(for: data.images?.regular?.url)
         
+        /// We need only to get first 4 items beucase they contains all the data we need. Other data will be dropped down.
         nutrientsCollectionViewDataSource = Array(data.digest?[0..<4] ?? [])
         nutrientsCollectionView.reloadData()
         ingredientsTableViewDataSource = data.ingredients ?? []
@@ -249,11 +255,13 @@ extension RecipeDetailsViewController: RecipeDetailsViewInput {
         
         recipeDescriptionLabel.text = "Bring colour to your dinner table with our \(data.label ?? Texts.Discover.mockRecipeTitle). Packed with nutrients, it's a satisfying lunch or supper for the family"
         
-        if UserDefaults.favouriteRecipes.contains(data) {
+        /// Changes `favouriteRecipeButton`'s image according to the provided from function argument.
+        if isFavourite {
             favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.filledHeart, for: .normal)
         } else {
             favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.heart, for: .normal)
         }
+        /// We set button's title as the source's name.
         sourceLinkButton.setTitle(data.source, for: .normal)
     }
 }
