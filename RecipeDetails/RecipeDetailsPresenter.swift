@@ -29,6 +29,7 @@ extension RecipeDetailsPresenter: RecipeDetailsModuleInput {
 }
 
 extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
+    
     func requestData() {
         interactor.requestData()
     }
@@ -44,10 +45,22 @@ extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
             interactor.addRecipeToFavourites()
         }
     }
+    
+    func webRecipeButtonTapped() {
+        interactor.requestRecipeSource()
+    }
 }
 
 extension RecipeDetailsPresenter: RecipeDetailsInteractorOutput {
     func didProvidedRecipe(_ recipe: Recipe) {
         view?.configure(with: recipe)
+    }
+    
+    func didProvidedRecipeSource(urlString: String) {
+        guard let url = URL(string: urlString) else {
+            // TODO: Implement opening alert
+            return
+        }
+        router.openWebRecipe(by: url)
     }
 }

@@ -14,4 +14,10 @@ final class RecipeDetailsRouter {
 }
 
 extension RecipeDetailsRouter: RecipeDetailsRouterInput {
+    
+    func openWebRecipe(by url: URL) {
+        let destination = UINavigationController(rootViewController: WebViewController(url: url))
+        destination.modalPresentationStyle = .fullScreen
+        viewController?.present(destination, animated: true)
+    }
 }

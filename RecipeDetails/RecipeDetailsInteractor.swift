@@ -28,4 +28,12 @@ extension RecipeDetailsInteractor: RecipeDetailsInteractorInput {
             UserDefaults.favouriteRecipes.remove(at: index)
         }
     }
+    
+    func requestRecipeSource() {
+        guard let urlString = recipe.url else {
+            // TODO: Implement providing error to presenter
+            return
+        }
+        output?.didProvidedRecipeSource(urlString: urlString)
+    }
 }

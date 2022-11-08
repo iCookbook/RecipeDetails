@@ -35,7 +35,7 @@ final class RecipeDetailsViewController: UIViewController {
     
     private lazy var favouriteRecipeButton: UIButton = {
         let button = UIButton()
-        button.setImage(Resources.Images.Discover.heart, for: .normal)
+        button.setImage(Resources.Images.RecipeDetails.heart, for: .normal)
         button.addTarget(self, action: #selector(favouriteButtonTapped), for: .touchUpInside)
         button.backgroundColor = Colors.systemBackground
         button.layer.cornerRadius = 18
@@ -101,6 +101,22 @@ final class RecipeDetailsViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var sourceLinkButton: UIButton = {
+        let button = UIButton()
+        // TODO: Set tint's color of the application as background color
+        button.backgroundColor = .yellow
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.setImage(Resources.Images.RecipeDetails.safari, for: .normal)
+        button.addTarget(self, action: #selector(sourceLinkButtonTapped), for: .touchUpInside)
+        button.titleLabel?.font = Fonts.buttonTitle()
+        button.contentEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
+        button.layer.cornerRadius = 18
+        button.layer.borderColor = UIColor.black.withAlphaComponent(0.15).cgColor
+        button.layer.borderWidth = 0.5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     // MARK: - Init
     
     init(output: RecipeDetailsViewOutput) {
@@ -134,10 +150,14 @@ final class RecipeDetailsViewController: UIViewController {
     
     private func changeFavouriteButtonImage() {
         if favouriteRecipeButtonPressed {
-            favouriteRecipeButton.setImage(Resources.Images.Discover.heart, for: .normal)
+            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.heart, for: .normal)
         } else {
-            favouriteRecipeButton.setImage(Resources.Images.Discover.filledHeart, for: .normal)
+            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.filledHeart, for: .normal)
         }
+    }
+    
+    @objc private func sourceLinkButtonTapped() {
+        output.webRecipeButtonTapped()
     }
     
     private func setupView() {
@@ -157,6 +177,7 @@ final class RecipeDetailsViewController: UIViewController {
         
         contentView.addSubview(titleIngredientsLabel)
         contentView.addSubview(ingredientsTableView)
+        contentView.addSubview(sourceLinkButton)
         
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -207,7 +228,11 @@ final class RecipeDetailsViewController: UIViewController {
             ingredientsTableView.topAnchor.constraint(equalTo: titleIngredientsLabel.bottomAnchor, constant: 6),
             ingredientsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             ingredientsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            ingredientsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            sourceLinkButton.topAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 18),
+            sourceLinkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            sourceLinkButton.heightAnchor.constraint(equalToConstant: 36),
+            sourceLinkButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
         ])
     }
 }
@@ -222,13 +247,14 @@ extension RecipeDetailsViewController: RecipeDetailsViewInput {
         ingredientsTableViewDataSource = data.ingredients ?? []
         ingredientsTableView.reloadData()
         
-        recipeDescriptionLabel.text = "Bring colour to your dinner table with our \(data.label ?? Texts.Discover.mockRecipeTitle). Packed with nutrients, it's a satisfying veggie lunch or supper for the family"
+        recipeDescriptionLabel.text = "Bring colour to your dinner table with our \(data.label ?? Texts.Discover.mockRecipeTitle). Packed with nutrients, it's a satisfying lunch or supper for the family"
         
         if UserDefaults.favouriteRecipes.contains(data) {
-            favouriteRecipeButton.setImage(Resources.Images.Discover.filledHeart, for: .normal)
+            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.filledHeart, for: .normal)
         } else {
-            favouriteRecipeButton.setImage(Resources.Images.Discover.heart, for: .normal)
+            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.heart, for: .normal)
         }
+        sourceLinkButton.setTitle(data.source, for: .normal)
     }
 }
 

@@ -22,19 +22,23 @@ protocol RecipeDetailsViewInput: AnyObject {
 protocol RecipeDetailsViewOutput: AnyObject {
     func requestData()
     func favouriteButtonTapped(flag: Bool)
+    func webRecipeButtonTapped()
 }
 
 protocol RecipeDetailsInteractorInput: AnyObject {
     func requestData()
     func addRecipeToFavourites()
     func removeRecipeFromFavourites()
+    func requestRecipeSource()
 }
 
 protocol RecipeDetailsInteractorOutput: AnyObject {
     func didProvidedRecipe(_ recipe: Recipe)
+    func didProvidedRecipeSource(urlString: String)
 }
 
 protocol RecipeDetailsRouterInput: AnyObject {
+    func openWebRecipe(by url: URL)
 }
 
 protocol RecipeDetailsRouterOutput: AnyObject {
