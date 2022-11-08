@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Models
 
 public final class RecipeDetailsAssembly {
     
@@ -31,6 +32,7 @@ public final class RecipeDetailsAssembly {
         presenter.moduleOutput = context.moduleOutput
         
         interactor.output = presenter
+        interactor.recipe = context.recipe
         router.viewController = viewController
         
         return RecipeDetailsAssembly(view: viewController, input: presenter, router: router)
@@ -47,8 +49,10 @@ public final class RecipeDetailsAssembly {
 
 public struct RecipeDetailsContext {
     weak var moduleOutput: RecipeDetailsModuleOutput?
+    let recipe: Recipe
     
-    public init(moduleOutput: RecipeDetailsModuleOutput?) {
+    public init(moduleOutput: RecipeDetailsModuleOutput?, recipe: Recipe) {
         self.moduleOutput = moduleOutput
+        self.recipe = recipe
     }
 }
