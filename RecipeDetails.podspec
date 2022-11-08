@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'RecipeDetails'
-  s.version          = '0.1.0'
+  s.version          = '1.0.0'
   s.summary          = '\'RecipeDetails\' module.'
   s.homepage         = 'https://github.com/iCookbook/RecipeDetails'
   s.author           = { 'htmlprogrammist' => '60363270+htmlprogrammist@users.noreply.github.com' }
