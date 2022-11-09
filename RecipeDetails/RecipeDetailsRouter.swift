@@ -6,6 +6,7 @@
 //  
 
 import UIKit
+import CommonUI
 
 final class RecipeDetailsRouter {
     weak var output: RecipeDetailsRouterOutput?
@@ -14,7 +15,7 @@ final class RecipeDetailsRouter {
 
 extension RecipeDetailsRouter: RecipeDetailsRouterInput {
     
-    /// Opens controller with web view (`WebKit`) with provided link
+    /// Opens controller with web view (`WebKit`) with provided link.
     /// - Parameter url: url to the web page to open.
     func openWebRecipe(by url: URL) {
         let destination = UINavigationController(rootViewController: WebViewController(url: url))

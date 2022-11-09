@@ -22,7 +22,7 @@ final class NutrientsCollectionViewDataSource: NSObject {
     public func fillInData(data: [Digest]?, calories: Double?, weight: Double?) {
         /// Create our own digests with data.
         self.data = [Digest(label: "Calories".localized, tag: nil, schemaOrgTag: nil, total: calories, hasRDI: nil, daily: nil),
-                     Digest(label: "Weight".localized, tag: nil, schemaOrgTag: nil, total: weight, hasRDI: nil, daily: nil)]
+                     Digest(label: "Weight, g".localized, tag: nil, schemaOrgTag: nil, total: weight, hasRDI: nil, daily: nil)]
         /// We need to get info only about 1. fats, 2. carbs and 3. proteins.
         self.data.append(contentsOf: Array(data?[0..<3] ?? []))
     }
