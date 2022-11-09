@@ -11,7 +11,7 @@ import Models
 /// Class reponsible for providing data to the Table View.
 ///
 /// It inherites from `NSObject` so we can declare conformance to `NSObjectProtocol` in Swift.
-public final class IngredientsTableViewDataSource: NSObject {
+final class IngredientsTableViewDataSource: NSObject {
     
     // MARK: - Private Properties
     

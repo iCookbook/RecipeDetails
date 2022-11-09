@@ -11,7 +11,7 @@ import Models
 /// Class reponsible for providing data to the Collection View.
 ///
 /// It inherites from `NSObject` so we can declare conformance to `NSObjectProtocol` in Swift.
-public final class NutrientsCollectionViewDataSource: NSObject {
+final class NutrientsCollectionViewDataSource: NSObject {
     
     // MARK: - Private Properties
     
