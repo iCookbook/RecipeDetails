@@ -90,7 +90,6 @@ final class RecipeDetailsViewController: UIViewController {
         return collectionView
     }()
     
-    
     private let ingredientsTableViewDataSource = IngredientsTableViewDataSource()
     private lazy var ingredientsTableView: UITableView = {
         let tableView = IngredientsTableView()
