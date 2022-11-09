@@ -4,9 +4,9 @@ Module that is shown after user tapps on a recipe
 
 ## To set up
 
-This module could be opened in [Discover](https://github.com/iCookbook/Discover), [Search](https://github.com/iCookbook/Search) and [Personal](https://github.com/iCookbook/Personal) modules. 
+This module could be opened in [Discover](https://github.com/iCookbook/Discover) and [Search](https://github.com/iCookbook/Search) modules. 
 
-Tt requires `Recipe` instance that must be provided inside `RecipeDetailsContext`.
+It requires `Recipe` instance that must be provided inside `RecipeDetailsContext`.
 
 ## Dependencies
 
