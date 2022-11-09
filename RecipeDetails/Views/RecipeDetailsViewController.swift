@@ -78,7 +78,6 @@ final class RecipeDetailsViewController: UIViewController {
     private lazy var nutrientsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 100, height: 70)
         layout.estimatedItemSize = CGSize(width: 100, height: 70)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
