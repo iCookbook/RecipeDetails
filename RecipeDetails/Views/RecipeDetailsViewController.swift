@@ -21,6 +21,7 @@ final class RecipeDetailsViewController: UIViewController {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.preservesSuperviewLayoutMargins = true
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -39,7 +40,7 @@ final class RecipeDetailsViewController: UIViewController {
         button.addTarget(self, action: #selector(favouriteButtonTapped), for: .touchUpInside)
         button.backgroundColor = Colors.systemBackground
         button.layer.cornerRadius = 18
-        button.layer.zPosition = 1
+        button.layer.zPosition = 2
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowRadius = 2.0
         button.layer.shadowOpacity = 0.6
@@ -64,7 +65,6 @@ final class RecipeDetailsViewController: UIViewController {
     }()
     
     private let titleDescriptionLabel = TitleLabel(text: Texts.RecipeDetails.titleDescription)
-    private let titleIngredientsLabel = TitleLabel(text: Texts.RecipeDetails.titleIngredients)
     
     private let recipeDescriptionLabel: UILabel = {
         let label = UILabel()
@@ -85,7 +85,7 @@ final class RecipeDetailsViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
         collectionView.register(NutrientCollectionViewCell.self, forCellWithReuseIdentifier: NutrientCollectionViewCell.identifier)
-        collectionView.contentInset = UIEdgeInsets(top: 12, left: 18, bottom: 12, right: 18)
+        collectionView.contentInset = UIEdgeInsets(top: 4, left: 18, bottom: 0, right: 18)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -95,7 +95,9 @@ final class RecipeDetailsViewController: UIViewController {
         let tableView = NonScrollableTableView()
         tableView.rowHeight = 44
         tableView.estimatedRowHeight = 44
+        tableView.delegate = self
         tableView.register(IngredientTableViewCell.self, forCellReuseIdentifier: IngredientTableViewCell.identifier)
+        tableView.register(TitleTableViewHeader.self, forHeaderFooterViewReuseIdentifier: TitleTableViewHeader.identifier)
         tableView.dataSource = ingredientsTableViewDataSource
         return tableView
     }()
@@ -108,7 +110,7 @@ final class RecipeDetailsViewController: UIViewController {
         button.setImage(Resources.Images.RecipeDetails.safari, for: .normal)
         button.addTarget(self, action: #selector(sourceLinkButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = Fonts.buttonTitle()
-        button.contentEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 4, right: 10)
         button.layer.cornerRadius = 18
         button.layer.borderColor = UIColor.black.withAlphaComponent(0.15).cgColor
         button.layer.borderWidth = 0.5
@@ -177,7 +179,6 @@ final class RecipeDetailsViewController: UIViewController {
         contentView.addSubview(recipeDescriptionLabel)
         contentView.addSubview(nutrientsCollectionView)
         
-        contentView.addSubview(titleIngredientsLabel)
         contentView.addSubview(ingredientsTableView)
         contentView.addSubview(sourceLinkButton)
         
@@ -220,14 +221,10 @@ final class RecipeDetailsViewController: UIViewController {
             nutrientsCollectionView.topAnchor.constraint(equalTo: recipeDescriptionLabel.bottomAnchor),
             nutrientsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             nutrientsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            nutrientsCollectionView.bottomAnchor.constraint(equalTo: titleIngredientsLabel.topAnchor),
-            nutrientsCollectionView.heightAnchor.constraint(equalToConstant: 112),
+            nutrientsCollectionView.bottomAnchor.constraint(equalTo: ingredientsTableView.topAnchor),
+            nutrientsCollectionView.heightAnchor.constraint(equalToConstant: 100),
             
-            titleIngredientsLabel.topAnchor.constraint(equalTo: nutrientsCollectionView.bottomAnchor),
-            titleIngredientsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
-            titleIngredientsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
-            
-            ingredientsTableView.topAnchor.constraint(equalTo: titleIngredientsLabel.bottomAnchor, constant: 6),
+            ingredientsTableView.topAnchor.constraint(equalTo: nutrientsCollectionView.bottomAnchor),
             ingredientsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             ingredientsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
@@ -261,5 +258,20 @@ extension RecipeDetailsViewController: RecipeDetailsViewInput {
         }
         /// We set button's title as the source's name.
         sourceLinkButton.setTitle(data.source, for: .normal)
+    }
+}
+
+extension RecipeDetailsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TitleTableViewHeader.identifier) as? TitleTableViewHeader else {
+            fatalError("Could not cast header in section \(section) to 'TitleTableViewHeader' in 'RecipeDetails' module")
+        }
+        header.configure(title: Texts.RecipeDetails.titleIngredients)
+        return header
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        36
     }
 }
