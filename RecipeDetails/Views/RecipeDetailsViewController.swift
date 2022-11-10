@@ -92,7 +92,10 @@ final class RecipeDetailsViewController: UIViewController {
     
     private let ingredientsTableViewDataSource = IngredientsTableViewDataSource()
     private lazy var ingredientsTableView: UITableView = {
-        let tableView = IngredientsTableView()
+        let tableView = NonScrollableTableView()
+        tableView.rowHeight = 44
+        tableView.estimatedRowHeight = 44
+        tableView.register(IngredientTableViewCell.self, forCellReuseIdentifier: IngredientTableViewCell.identifier)
         tableView.dataSource = ingredientsTableViewDataSource
         return tableView
     }()
