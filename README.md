@@ -14,7 +14,9 @@ This module has 4 dependencies:
 
 - `CommonUI` for some reasons:
     * Image loader in `UIImageView`
-    * Access to `UIButton`'s creators
+    * Usage `WebViewController` class
+    * Identifiers of the cells
+    * RecipeDetailsViewController requires to import it's ancestor
 - `Resources` for access to resources of the application
 - `Models` to use `Recipe` model
 - `Persistence` to save favourites recipes
