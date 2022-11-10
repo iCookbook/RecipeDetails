@@ -20,7 +20,7 @@ final class NutrientCollectionViewCell: UICollectionViewCell {
     
     private let nutrientQuantityLabel: UILabel = {
         let label = UILabel()
-        label.font = Fonts.headline()
+        label.font = Fonts.title()
         return label
     }()
     

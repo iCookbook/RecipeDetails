@@ -64,6 +64,7 @@ final class RecipeDetailsViewController: UIViewController {
     }()
     
     private let titleDescriptionLabel = TitleLabel(text: Texts.RecipeDetails.titleDescription)
+    private let titleIngredientsLabel = TitleLabel(text: Texts.RecipeDetails.titleIngredients)
     
     private let recipeDescriptionLabel: UILabel = {
         let label = UILabel()
@@ -73,15 +74,13 @@ final class RecipeDetailsViewController: UIViewController {
         return label
     }()
     
-    private var nutrientsCollectionViewDataSource: [Digest] = []
-    
+    private let nutrientsCollectionViewDataSource = NutrientsCollectionViewDataSource()
     private lazy var nutrientsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 100, height: 70)
         layout.estimatedItemSize = CGSize(width: 100, height: 70)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.dataSource = self
+        collectionView.dataSource = nutrientsCollectionViewDataSource
         collectionView.allowsSelection = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
@@ -91,13 +90,10 @@ final class RecipeDetailsViewController: UIViewController {
         return collectionView
     }()
     
-    private let titleIngredientsLabel = TitleLabel(text: Texts.RecipeDetails.titleIngredients)
-    
-    private var ingredientsTableViewDataSource: [Ingredient] = []
-    
+    private let ingredientsTableViewDataSource = IngredientsTableViewDataSource()
     private lazy var ingredientsTableView: UITableView = {
         let tableView = IngredientsTableView()
-        tableView.dataSource = self
+        tableView.dataSource = ingredientsTableViewDataSource
         return tableView
     }()
     
@@ -247,10 +243,9 @@ extension RecipeDetailsViewController: RecipeDetailsViewInput {
         title = data.label
         recipeImageView.loadImage(for: data.images?.regular?.url)
         
-        /// We need only to get first 4 items beucase they contains all the data we need. Other data will be dropped down.
-        nutrientsCollectionViewDataSource = Array(data.digest?[0..<4] ?? [])
+        nutrientsCollectionViewDataSource.fillInData(data: data.digest, calories: data.calories, weight: data.totalWeight)
         nutrientsCollectionView.reloadData()
-        ingredientsTableViewDataSource = data.ingredients ?? []
+        ingredientsTableViewDataSource.fillInData(data: data.ingredients)
         ingredientsTableView.reloadData()
         
         recipeDescriptionLabel.text = "Bring colour to your dinner table with our \(data.label ?? Texts.Discover.mockRecipeTitle). Packed with nutrients, it's a satisfying lunch or supper for the family"
@@ -263,41 +258,5 @@ extension RecipeDetailsViewController: RecipeDetailsViewInput {
         }
         /// We set button's title as the source's name.
         sourceLinkButton.setTitle(data.source, for: .normal)
-    }
-}
-
-// MARK: - Table View
-
-extension RecipeDetailsViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        ingredientsTableViewDataSource.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: IngredientTableViewCell.identifier, for: indexPath) as? IngredientTableViewCell else {
-            fatalError("Could not cast table view cell to `IngredientTableViewCell` for indexPath: \(indexPath)")
-        }
-        let ingredient = ingredientsTableViewDataSource[indexPath.row]
-        cell.configure(name: ingredient.food?.capitalized, quantity: ingredient.quantity, measure: ingredient.measure)
-        return cell
-    }
-}
-
-// MARK: - Collection View
-
-extension RecipeDetailsViewController: UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        nutrientsCollectionViewDataSource.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NutrientCollectionViewCell.identifier, for: indexPath) as? NutrientCollectionViewCell else {
-            fatalError("Could not cast collection view cell to `NutrientCollectionViewCell` for indexPath: \(indexPath)")
-        }
-        let nutrient = nutrientsCollectionViewDataSource[indexPath.row]
-        cell.configure(name: nutrient.label, quantity: nutrient.total)
-        return cell
     }
 }
