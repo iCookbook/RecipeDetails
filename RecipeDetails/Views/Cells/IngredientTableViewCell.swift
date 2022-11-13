@@ -47,12 +47,12 @@ final class IngredientTableViewCell: UITableViewCell {
         
         ingredientMeasureLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         NSLayoutConstraint.activate([
-            ingredientNameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: contentView.layoutMargins.left / 2),
-            ingredientNameLabel.trailingAnchor.constraint(equalTo: ingredientMeasureLabel.leadingAnchor, constant: -contentView.layoutMargins.right / 2),
+            ingredientNameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            ingredientNameLabel.trailingAnchor.constraint(equalTo: ingredientMeasureLabel.leadingAnchor),
             ingredientNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
-            ingredientMeasureLabel.leadingAnchor.constraint(equalTo: ingredientNameLabel.trailingAnchor, constant: contentView.layoutMargins.left / 2),
-            ingredientMeasureLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -contentView.layoutMargins.right / 2),
+            ingredientMeasureLabel.leadingAnchor.constraint(equalTo: ingredientNameLabel.trailingAnchor),
+            ingredientMeasureLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             ingredientMeasureLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }

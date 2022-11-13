@@ -83,7 +83,7 @@ final class RecipeDetailsViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
         collectionView.register(NutrientCollectionViewCell.self, forCellWithReuseIdentifier: NutrientCollectionViewCell.identifier)
-        collectionView.contentInset = UIEdgeInsets(top: 4, left: 18, bottom: 0, right: 18)
+        collectionView.contentInset = UIEdgeInsets(top: 4, left: 16, bottom: 0, right: 16)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -97,6 +97,8 @@ final class RecipeDetailsViewController: UIViewController {
         tableView.dataSource = ingredientsTableViewDataSource
         tableView.register(IngredientTableViewCell.self, forCellReuseIdentifier: IngredientTableViewCell.identifier)
         tableView.register(TitleTableViewHeader.self, forHeaderFooterViewReuseIdentifier: TitleTableViewHeader.identifier)
+        tableView.sectionFooterHeight = 0
+        tableView.estimatedSectionFooterHeight = 0
         return tableView
     }()
     
@@ -209,12 +211,12 @@ final class RecipeDetailsViewController: UIViewController {
             contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
             
             titleDescriptionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            titleDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
-            titleDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            titleDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            titleDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             recipeDescriptionLabel.topAnchor.constraint(equalTo: titleDescriptionLabel.bottomAnchor, constant: 10),
-            recipeDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
-            recipeDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            recipeDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            recipeDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             nutrientsCollectionView.topAnchor.constraint(equalTo: recipeDescriptionLabel.bottomAnchor),
             nutrientsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -226,8 +228,8 @@ final class RecipeDetailsViewController: UIViewController {
             ingredientsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             ingredientsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            sourceLinkButton.topAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 18),
-            sourceLinkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            sourceLinkButton.topAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 16),
+            sourceLinkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             sourceLinkButton.heightAnchor.constraint(equalToConstant: 36),
             sourceLinkButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
         ])
