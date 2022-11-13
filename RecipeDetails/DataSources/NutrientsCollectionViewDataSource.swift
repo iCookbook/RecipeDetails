@@ -19,12 +19,14 @@ final class NutrientsCollectionViewDataSource: NSObject {
     
     // MARK: - Public Methods
     
-    public func fillInData(data: [Digest]?, calories: Double?, weight: Double?) {
+    public func fillInData(data: Recipe) {
         /// Create our own digests with data.
-        self.data = [Digest(label: "Calories".localized, tag: nil, schemaOrgTag: nil, total: calories, hasRDI: nil, daily: nil),
-                     Digest(label: "Weight, g".localized, tag: nil, schemaOrgTag: nil, total: weight, hasRDI: nil, daily: nil)]
+        self.data = [Digest(label: "Calories".localized, total: data.calories),
+                     Digest(label: "Weight, g".localized, total: data.totalWeight),
+                     Digest(label: "Yield".localized, total: data.yield ?? 4),
+                     Digest(label: "Minutes".localized, total: data.totalTime)]
         /// We need to get info only about 1. fats, 2. carbs and 3. proteins.
-        self.data.append(contentsOf: Array(data?[0..<3] ?? []))
+        self.data.append(contentsOf: Array(data.digest?[0..<3] ?? []))
     }
 }
 
