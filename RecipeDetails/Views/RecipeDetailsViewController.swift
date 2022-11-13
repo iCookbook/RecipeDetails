@@ -9,7 +9,6 @@ import UIKit
 import CommonUI
 import Models
 import Resources
-import Persistence
 
 final class RecipeDetailsViewController: UIViewController {
     
@@ -109,7 +108,7 @@ final class RecipeDetailsViewController: UIViewController {
         button.setImage(Resources.Images.RecipeDetails.safari, for: .normal)
         button.addTarget(self, action: #selector(sourceLinkButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = Fonts.buttonTitle()
-        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 4, right: 10)
+        button.contentEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
         button.layer.cornerRadius = 18
         button.layer.borderColor = UIColor.black.withAlphaComponent(0.15).cgColor
         button.layer.borderWidth = 0.5
