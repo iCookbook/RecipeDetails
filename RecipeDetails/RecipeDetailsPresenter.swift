@@ -67,3 +67,6 @@ extension RecipeDetailsPresenter: RecipeDetailsInteractorOutput {
         router.openWebRecipe(by: url)
     }
 }
+
+extension RecipeDetailsPresenter: RecipeDetailsRouterOutput {
+}

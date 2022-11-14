@@ -14,7 +14,7 @@ final class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let output: RecipeDetailsViewOutput
+    private let presenter: RecipeDetailsViewOutput
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -120,8 +120,8 @@ final class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Init
     
-    init(output: RecipeDetailsViewOutput) {
-        self.output = output
+    init(presenter: RecipeDetailsViewOutput) {
+        self.presenter = presenter
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -136,7 +136,7 @@ final class RecipeDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
-        output.requestData()
+        presenter.requestData()
     }
     
     // MARK: - Private Methods
@@ -148,7 +148,7 @@ final class RecipeDetailsViewController: UIViewController {
         UIView.transition(with: favouriteRecipeButton, duration: 0.15, options: .transitionCrossDissolve, animations: { [unowned self] in
             changeFavouriteButtonImage()
         })
-        output.favouriteButtonTapped(flag: favouriteRecipeButtonPressed)
+        presenter.favouriteButtonTapped(flag: favouriteRecipeButtonPressed)
     }
     
     /// Changes favourite button's image depending on whether is it pressed or not.
@@ -161,7 +161,7 @@ final class RecipeDetailsViewController: UIViewController {
     }
     
     @objc private func sourceLinkButtonTapped() {
-        output.webRecipeButtonTapped()
+        presenter.webRecipeButtonTapped()
     }
     
     private func setupView() {

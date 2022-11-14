@@ -9,7 +9,7 @@ import UIKit
 import CommonUI
 
 final class RecipeDetailsRouter {
-    weak var output: RecipeDetailsRouterOutput?
+    weak var presenter: RecipeDetailsRouterOutput?
     weak var viewController: UIViewController?
 }
 
