@@ -228,7 +228,7 @@ final class RecipeDetailsViewController: UIViewController {
             ingredientsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             ingredientsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            sourceLinkButton.topAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 16),
+            sourceLinkButton.topAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor),
             sourceLinkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             sourceLinkButton.heightAnchor.constraint(equalToConstant: 36),
             sourceLinkButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
