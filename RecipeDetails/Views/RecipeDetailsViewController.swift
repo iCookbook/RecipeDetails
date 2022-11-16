@@ -94,6 +94,7 @@ final class RecipeDetailsViewController: UIViewController {
         tableView.rowHeight = 44
         tableView.estimatedRowHeight = 44
         tableView.delegate = self
+        tableView.allowsSelection = false
         tableView.dataSource = ingredientsTableViewDataSource
         tableView.register(IngredientTableViewCell.self, forCellReuseIdentifier: IngredientTableViewCell.identifier)
         tableView.register(TitleTableViewHeader.self, forHeaderFooterViewReuseIdentifier: TitleTableViewHeader.identifier)
