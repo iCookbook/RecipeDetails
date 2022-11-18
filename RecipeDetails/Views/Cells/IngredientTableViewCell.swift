@@ -49,11 +49,13 @@ final class IngredientTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             ingredientNameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             ingredientNameLabel.trailingAnchor.constraint(equalTo: ingredientMeasureLabel.leadingAnchor),
-            ingredientNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            ingredientNameLabel.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            ingredientNameLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
             
             ingredientMeasureLabel.leadingAnchor.constraint(equalTo: ingredientNameLabel.trailingAnchor),
             ingredientMeasureLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-            ingredientMeasureLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            ingredientMeasureLabel.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            ingredientMeasureLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
         ])
     }
     

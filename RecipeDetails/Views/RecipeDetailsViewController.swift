@@ -92,7 +92,7 @@ final class RecipeDetailsViewController: UIViewController {
     private lazy var ingredientsTableView: UITableView = {
         let tableView = NonScrollableTableView(frame: .zero, style: .grouped)
         tableView.rowHeight = 44
-        tableView.estimatedRowHeight = 44
+        tableView.estimatedSectionHeaderHeight = 40
         tableView.delegate = self
         tableView.allowsSelection = false
         tableView.dataSource = ingredientsTableViewDataSource
@@ -270,9 +270,5 @@ extension RecipeDetailsViewController: UITableViewDelegate {
         }
         header.configure(title: Texts.RecipeDetails.titleIngredients)
         return header
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        36
     }
 }
