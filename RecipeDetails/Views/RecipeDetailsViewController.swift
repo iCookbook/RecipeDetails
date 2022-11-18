@@ -243,13 +243,12 @@ extension RecipeDetailsViewController: RecipeDetailsViewInput {
     func configure(with data: Models.Recipe, isFavourite: Bool) {
         title = data.label
         recipeImageView.loadImage(for: data.images?.regular?.url)
+        recipeDescriptionLabel.text = data.description
         
         nutrientsCollectionViewDataSource.fillInData(data: data)
         nutrientsCollectionView.reloadData()
         ingredientsTableViewDataSource.fillInData(data: data.ingredients)
         ingredientsTableView.reloadData()
-        
-        recipeDescriptionLabel.text = "Bring colour to your dinner table with our \(data.label ?? Texts.Discover.mockRecipeTitle). Packed with nutrients, it's a satisfying lunch or supper for the family"
         
         /// Changes `favouriteRecipeButton`'s image according to the provided from function argument.
         if isFavourite {

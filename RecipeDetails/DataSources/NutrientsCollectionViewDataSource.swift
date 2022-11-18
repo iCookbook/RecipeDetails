@@ -7,6 +7,7 @@
 
 import UIKit
 import Models
+import Resources
 
 /// Class reponsible for providing data to the Collection View.
 ///
@@ -20,13 +21,19 @@ final class NutrientsCollectionViewDataSource: NSObject {
     // MARK: - Public Methods
     
     public func fillInData(data: Recipe) {
-        /// Create our own digests with data.
-        self.data = [Digest(label: "Calories".localized, total: data.calories),
-                     Digest(label: "Weight, g".localized, total: data.totalWeight),
-                     Digest(label: "Yield".localized, total: data.yield ?? 4),
-                     Digest(label: "Minutes".localized, total: data.totalTime)]
         /// We need to get info only about 1. fats, 2. carbs and 3. proteins.
-        self.data.append(contentsOf: Array(data.digest?[0..<3] ?? []))
+        let fatDigest = data.digest?[0]
+        let carbsDigest = data.digest?[1]
+        let proteinDigest = data.digest?[2]
+        
+        /// Create our own digests with data.
+        self.data = [Digest(label: Texts.RecipeDetails.calories(count: Int(data.calories ?? 0)), total: data.calories),
+                     Digest(label: "Weight, g".localized, total: data.totalWeight),
+                     Digest(label: Texts.RecipeDetails.servings(count: Int(data.yield ?? 4)), total: data.yield ?? 4),
+                     Digest(label: Texts.RecipeDetails.minutes(count: Int(data.totalTime ?? 50)), total: data.totalTime),
+                     Digest(label: Texts.RecipeDetails.protein(count: Int(proteinDigest?.total ?? 0)), total: proteinDigest?.total),
+                     Digest(label: Texts.RecipeDetails.fat(count: Int(fatDigest?.total ?? 0)), total: fatDigest?.total),
+                     Digest(label: Texts.RecipeDetails.carbs(count: Int(carbsDigest?.total ?? 0)), total: carbsDigest?.total)]
     }
 }
 
