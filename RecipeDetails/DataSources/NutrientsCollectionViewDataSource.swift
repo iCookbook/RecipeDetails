@@ -16,10 +16,14 @@ final class NutrientsCollectionViewDataSource: NSObject {
     
     // MARK: - Private Properties
     
+    /// Data for this data source.
     private var data: [Digest] = []
     
     // MARK: - Public Methods
     
+    /// Fulfills data for this data source.
+    ///
+    /// - Parameter data: `Recipe` instance to get `digest` data from.
     public func fillInData(data: Recipe) {
         /// We need to get info only about 1. fats, 2. carbs and 3. proteins.
         let fatDigest = data.digest?[0]

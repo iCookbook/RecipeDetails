@@ -15,10 +15,16 @@ final class IngredientsTableViewDataSource: NSObject {
     
     // MARK: - Private Properties
     
+    /// Data for this data source.
     private var data: [Ingredient] = []
     
     // MARK: - Public Methods
     
+    /// Fulfills data for this data source.
+    ///
+    /// - Parameter data: optional array of ingredients.
+    ///
+    /// - Note: It is optional, because we get `Optional<Ingredient>` from the `Recipe` model.
     public func fillInData(data: [Ingredient]?) {
         self.data = data ?? []
     }

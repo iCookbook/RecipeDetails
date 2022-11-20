@@ -29,7 +29,8 @@ extension RecipeDetailsPresenter: RecipeDetailsModuleInput {
 
 extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
     
-    func requestData() {
+    /// Called in the end of view's `viewDidLoad` method.
+    func viewDidLoad() {
         interactor.provideData()
     }
     
@@ -52,11 +53,17 @@ extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
 }
 
 extension RecipeDetailsPresenter: RecipeDetailsInteractorOutput {
+    /// Provides data from interactor.
+    ///
+    /// - Parameters:
+    ///   - recipe: `Recipe` instance provided from the interactor
+    ///   - isFavourite: defines whether provided recipe is favourite or not.
     func didProvidedRecipe(_ recipe: Recipe, isFavourite: Bool) {
         view?.configure(with: recipe, isFavourite: isFavourite)
     }
     
     /// Provides the link from interactor.
+    ///
     /// - Parameter urlString: link to the recipe.
     func didProvidedRecipeSource(urlString: String) {
         

@@ -137,7 +137,7 @@ final class RecipeDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
-        presenter.requestData()
+        presenter.viewDidLoad()
     }
     
     // MARK: - Private Methods
@@ -161,6 +161,7 @@ final class RecipeDetailsViewController: UIViewController {
         }
     }
     
+    /// Handles tapping on `sourceLinkButton`.
     @objc private func sourceLinkButtonTapped() {
         presenter.webRecipeButtonTapped()
     }
@@ -239,6 +240,7 @@ final class RecipeDetailsViewController: UIViewController {
 
 extension RecipeDetailsViewController: RecipeDetailsViewInput {
     /// Fills in views with data.
+    ///
     /// - Parameter data: data to fill in.
     func configure(with data: Models.Recipe, isFavourite: Bool) {
         title = data.label

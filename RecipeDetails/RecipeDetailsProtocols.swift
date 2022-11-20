@@ -19,7 +19,7 @@ protocol RecipeDetailsViewInput: AnyObject {
 }
 
 protocol RecipeDetailsViewOutput: AnyObject {
-    func requestData()
+    func viewDidLoad()
     func favouriteButtonTapped(flag: Bool)
     func webRecipeButtonTapped()
 }
