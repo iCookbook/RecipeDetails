@@ -279,8 +279,8 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-RecipeDetails_Example/Pods-RecipeDetails_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CommonUI/CommonUI.framework",
+				"${BUILT_PRODUCTS_DIR}/Logger/Logger.framework",
 				"${BUILT_PRODUCTS_DIR}/Models/Models.framework",
-				"${BUILT_PRODUCTS_DIR}/Networking/Networking.framework",
 				"${BUILT_PRODUCTS_DIR}/Persistence/Persistence.framework",
 				"${BUILT_PRODUCTS_DIR}/RecipeDetails/RecipeDetails.framework",
 				"${BUILT_PRODUCTS_DIR}/Resources/Resources.framework",
@@ -288,8 +288,8 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CommonUI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Logger.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Models.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Networking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Persistence.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RecipeDetails.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Resources.framework",

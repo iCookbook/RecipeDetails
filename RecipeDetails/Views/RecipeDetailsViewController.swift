@@ -244,7 +244,7 @@ extension RecipeDetailsViewController: RecipeDetailsViewInput {
     /// - Parameter data: data to fill in.
     func configure(with data: Models.Recipe, isFavourite: Bool) {
         title = data.label
-        recipeImageView.loadImage(for: data.images?.regular?.url)
+        recipeImageView.image = UIImage(data: data.imageData ?? Data())
         recipeDescriptionLabel.text = data.description
         
         nutrientsCollectionViewDataSource.fillInData(data: data)
