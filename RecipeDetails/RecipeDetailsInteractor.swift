@@ -36,10 +36,7 @@ extension RecipeDetailsInteractor: RecipeDetailsInteractorInput {
     
     /// Provides recipe's source from interactor
     func provideRecipeSource() {
-        guard let urlString = recipe.url else {
-            // TODO: Implement providing error to presenter
-            return
-        }
+        guard let urlString = recipe.url else { return } // do nothing
         presenter?.didProvidedRecipeSource(urlString: urlString)
     }
 }

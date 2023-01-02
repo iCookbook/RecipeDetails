@@ -16,6 +16,7 @@ final class IngredientTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = Fonts.medium()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -24,6 +25,7 @@ final class IngredientTableViewCell: UITableViewCell {
         label.font = Fonts.body()
         label.textColor = Colors.secondaryLabel
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     

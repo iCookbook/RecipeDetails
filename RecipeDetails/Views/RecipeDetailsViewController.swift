@@ -69,6 +69,7 @@ final class RecipeDetailsViewController: UIViewController {
         label.font = Fonts.body()
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -90,7 +91,7 @@ final class RecipeDetailsViewController: UIViewController {
     
     private let ingredientsTableViewDataSource = IngredientsTableViewDataSource()
     private lazy var ingredientsTableView: UITableView = {
-        let tableView = NonScrollableTableView(frame: .zero, style: .grouped)
+        let tableView = TableView(frame: .zero, style: .grouped)
         tableView.rowHeight = 44
         tableView.estimatedSectionHeaderHeight = 40
         tableView.delegate = self
@@ -106,9 +107,8 @@ final class RecipeDetailsViewController: UIViewController {
     private lazy var sourceLinkButton: UIButton = {
         let button = UIButton()
         // TODO: Set tint's color of the application as background color
-        button.backgroundColor = .brown
+        button.backgroundColor = Colors.appColor
         button.setTitleColor(UIColor.white, for: .normal)
-        button.setImage(Resources.Images.RecipeDetails.safari, for: .normal)
         button.addTarget(self, action: #selector(sourceLinkButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = Fonts.buttonTitle()
         button.contentEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
@@ -244,11 +244,7 @@ extension RecipeDetailsViewController: RecipeDetailsViewInput {
     /// - Parameter data: data to fill in.
     func configure(with data: Models.Recipe, isFavourite: Bool) {
         title = data.label
-        if let imageData = data.imageData {
-            recipeImageView.image = UIImage(data: imageData)
-        } else {
-            recipeImageView.image = Resources.Images.sampleRecipeImage
-        }
+        recipeImageView.setImage(by: data.imageData)
         recipeDescriptionLabel.text = data.description
         
         nutrientsCollectionViewDataSource.fillInData(data: data)
