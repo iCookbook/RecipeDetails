@@ -146,19 +146,18 @@ final class RecipeDetailsViewController: UIViewController {
     @objc private func favouriteButtonTapped() {
         favouriteRecipeButtonPressed.toggle()
         // animating tapping
-        UIView.transition(with: favouriteRecipeButton, duration: 0.15, options: .transitionCrossDissolve, animations: { [unowned self] in
-            changeFavouriteButtonImage()
+        UIView.transition(with: favouriteRecipeButton, duration: 0.15, options: .transitionCrossDissolve, animations: {
+            self.changeFavouriteButtonImage()
         })
         presenter.favouriteButtonTapped(flag: favouriteRecipeButtonPressed)
     }
     
     /// Changes favourite button's image depending on whether is it pressed or not.
     private func changeFavouriteButtonImage() {
-        if favouriteRecipeButtonPressed {
-            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.heart, for: .normal)
-        } else {
-            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.filledHeart, for: .normal)
-        }
+        favouriteRecipeButton.setImage(favouriteRecipeButtonPressed
+                        ? Resources.Images.RecipeDetails.filledHeart
+                        : Resources.Images.RecipeDetails.heart,
+                        for: .normal)
     }
     
     /// Handles tapping on `sourceLinkButton`.
@@ -197,7 +196,7 @@ final class RecipeDetailsViewController: UIViewController {
             topView.widthAnchor.constraint(equalTo: view.widthAnchor),
             
             favouriteRecipeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -16),
-            favouriteRecipeButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -40),
+            favouriteRecipeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
             favouriteRecipeButton.heightAnchor.constraint(equalToConstant: 36),
             favouriteRecipeButton.widthAnchor.constraint(equalToConstant: 36),
             
@@ -253,11 +252,9 @@ extension RecipeDetailsViewController: RecipeDetailsViewInput {
         ingredientsTableView.reloadData()
         
         /// Changes `favouriteRecipeButton`'s image according to the provided from function argument.
-        if isFavourite {
-            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.filledHeart, for: .normal)
-        } else {
-            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.heart, for: .normal)
-        }
+        favouriteRecipeButtonPressed = isFavourite
+        changeFavouriteButtonImage()
+        
         /// We set button's title as the source's name.
         sourceLinkButton.setTitle(data.source, for: .normal)
     }

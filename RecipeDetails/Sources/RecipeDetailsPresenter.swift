@@ -37,12 +37,9 @@ extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
     /// Handles tapping on the favourite button.
     /// - Parameter flag: Defines whether favourite button was pressed or not.
     func favouriteButtonTapped(flag: Bool) {
-        if flag {
-            /// If it was already pressed, we remove it.
-            interactor.removeRecipeFromFavourites()
-        } else {
-            /// If it was not pressed, we add it to an array.
-            interactor.addRecipeToFavourites()
+        DispatchQueue.global(qos: .background).async {
+            /// If it was pressed (true), we remove it. If it was de-pressed (false), we add it to an array.
+            flag ? self.interactor.addRecipeToFavourites() : self.interactor.removeRecipeFromFavourites()
         }
     }
     
