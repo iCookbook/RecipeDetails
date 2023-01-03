@@ -6,6 +6,7 @@
 //  
 
 import Models
+import Resources
 
 final class RecipeDetailsPresenter {
     weak var view: RecipeDetailsViewInput?
@@ -63,9 +64,8 @@ extension RecipeDetailsPresenter: RecipeDetailsInteractorOutput {
     ///
     /// - Parameter urlString: link to the recipe.
     func didProvidedRecipeSource(urlString: String) {
-        
         guard let url = URL(string: urlString) else {
-            // TODO: Implement opening alert
+            view?.displayError(title: Texts.Errors.oops, message: Texts.Errors.noRecipeSource)
             return
         }
         router.openWebRecipe(by: url)

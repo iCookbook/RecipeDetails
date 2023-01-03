@@ -258,6 +258,10 @@ extension RecipeDetailsViewController: RecipeDetailsViewInput {
         /// We set button's title as the source's name.
         sourceLinkButton.setTitle(data.source, for: .normal)
     }
+    
+    func displayError(title: String, message: String) {
+        showAlert(title: title, message: message, image: nil)
+    }
 }
 
 extension RecipeDetailsViewController: UITableViewDelegate {
