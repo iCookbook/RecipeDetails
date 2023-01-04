@@ -28,4 +28,4 @@ This module has 4 dependencies:
 
 ---
 
-For more details, read [GitHub Wiki] documentation(https://github.com/iCookbook/RecipeDetails/wiki)
+For more details, read [GitHub Wiki](https://github.com/iCookbook/RecipeDetails/wiki) documentation
