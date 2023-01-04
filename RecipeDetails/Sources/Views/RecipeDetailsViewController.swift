@@ -3,24 +3,23 @@
 //  Pods
 //
 //  Created by Егор Бадмаев on 05.11.2022.
-//  
 //
 
 import UIKit
 import CommonUI
 import Models
 import Resources
-import Persistence
 
 final class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let output: RecipeDetailsViewOutput
+    private let presenter: RecipeDetailsViewOutput
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.preservesSuperviewLayoutMargins = true
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -39,7 +38,7 @@ final class RecipeDetailsViewController: UIViewController {
         button.addTarget(self, action: #selector(favouriteButtonTapped), for: .touchUpInside)
         button.backgroundColor = Colors.systemBackground
         button.layer.cornerRadius = 18
-        button.layer.zPosition = 1
+        button.layer.zPosition = 2
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowRadius = 2.0
         button.layer.shadowOpacity = 0.6
@@ -64,13 +63,13 @@ final class RecipeDetailsViewController: UIViewController {
     }()
     
     private let titleDescriptionLabel = TitleLabel(text: Texts.RecipeDetails.titleDescription)
-    private let titleIngredientsLabel = TitleLabel(text: Texts.RecipeDetails.titleIngredients)
     
     private let recipeDescriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.body()
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -85,24 +84,31 @@ final class RecipeDetailsViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
         collectionView.register(NutrientCollectionViewCell.self, forCellWithReuseIdentifier: NutrientCollectionViewCell.identifier)
-        collectionView.contentInset = UIEdgeInsets(top: 12, left: 18, bottom: 12, right: 18)
+        collectionView.contentInset = UIEdgeInsets(top: 4, left: 16, bottom: 0, right: 16)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
     private let ingredientsTableViewDataSource = IngredientsTableViewDataSource()
     private lazy var ingredientsTableView: UITableView = {
-        let tableView = IngredientsTableView()
+        let tableView = TableView(frame: .zero, style: .grouped)
+        tableView.rowHeight = 44
+        tableView.estimatedSectionHeaderHeight = 40
+        tableView.delegate = self
+        tableView.allowsSelection = false
         tableView.dataSource = ingredientsTableViewDataSource
+        tableView.register(IngredientTableViewCell.self, forCellReuseIdentifier: IngredientTableViewCell.identifier)
+        tableView.register(TitleTableViewHeader.self, forHeaderFooterViewReuseIdentifier: TitleTableViewHeader.identifier)
+        tableView.sectionFooterHeight = 0
+        tableView.estimatedSectionFooterHeight = 0
         return tableView
     }()
     
     private lazy var sourceLinkButton: UIButton = {
         let button = UIButton()
         // TODO: Set tint's color of the application as background color
-        button.backgroundColor = .yellow
+        button.backgroundColor = Colors.appColor
         button.setTitleColor(UIColor.white, for: .normal)
-        button.setImage(Resources.Images.RecipeDetails.safari, for: .normal)
         button.addTarget(self, action: #selector(sourceLinkButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = Fonts.buttonTitle()
         button.contentEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
@@ -115,8 +121,8 @@ final class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Init
     
-    init(output: RecipeDetailsViewOutput) {
-        self.output = output
+    init(presenter: RecipeDetailsViewOutput) {
+        self.presenter = presenter
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -131,7 +137,7 @@ final class RecipeDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
-        output.requestData()
+        presenter.viewDidLoad()
     }
     
     // MARK: - Private Methods
@@ -140,23 +146,23 @@ final class RecipeDetailsViewController: UIViewController {
     @objc private func favouriteButtonTapped() {
         favouriteRecipeButtonPressed.toggle()
         // animating tapping
-        UIView.transition(with: favouriteRecipeButton, duration: 0.15, options: .transitionCrossDissolve, animations: { [unowned self] in
-            changeFavouriteButtonImage()
+        UIView.transition(with: favouriteRecipeButton, duration: 0.15, options: .transitionCrossDissolve, animations: {
+            self.changeFavouriteButtonImage()
         })
-        output.favouriteButtonTapped(flag: favouriteRecipeButtonPressed)
+        presenter.favouriteButtonTapped(flag: favouriteRecipeButtonPressed)
     }
     
     /// Changes favourite button's image depending on whether is it pressed or not.
     private func changeFavouriteButtonImage() {
-        if favouriteRecipeButtonPressed {
-            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.heart, for: .normal)
-        } else {
-            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.filledHeart, for: .normal)
-        }
+        favouriteRecipeButton.setImage(favouriteRecipeButtonPressed
+                        ? Resources.Images.RecipeDetails.filledHeart
+                        : Resources.Images.RecipeDetails.heart,
+                        for: .normal)
     }
     
+    /// Handles tapping on `sourceLinkButton`.
     @objc private func sourceLinkButtonTapped() {
-        output.webRecipeButtonTapped()
+        presenter.webRecipeButtonTapped()
     }
     
     private func setupView() {
@@ -174,7 +180,6 @@ final class RecipeDetailsViewController: UIViewController {
         contentView.addSubview(recipeDescriptionLabel)
         contentView.addSubview(nutrientsCollectionView)
         
-        contentView.addSubview(titleIngredientsLabel)
         contentView.addSubview(ingredientsTableView)
         contentView.addSubview(sourceLinkButton)
         
@@ -191,7 +196,7 @@ final class RecipeDetailsViewController: UIViewController {
             topView.widthAnchor.constraint(equalTo: view.widthAnchor),
             
             favouriteRecipeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -16),
-            favouriteRecipeButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -40),
+            favouriteRecipeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
             favouriteRecipeButton.heightAnchor.constraint(equalToConstant: 36),
             favouriteRecipeButton.widthAnchor.constraint(equalToConstant: 36),
             
@@ -207,29 +212,25 @@ final class RecipeDetailsViewController: UIViewController {
             contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
             
             titleDescriptionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            titleDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
-            titleDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            titleDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            titleDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             recipeDescriptionLabel.topAnchor.constraint(equalTo: titleDescriptionLabel.bottomAnchor, constant: 10),
-            recipeDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
-            recipeDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            recipeDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            recipeDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             nutrientsCollectionView.topAnchor.constraint(equalTo: recipeDescriptionLabel.bottomAnchor),
             nutrientsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             nutrientsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            nutrientsCollectionView.bottomAnchor.constraint(equalTo: titleIngredientsLabel.topAnchor),
-            nutrientsCollectionView.heightAnchor.constraint(equalToConstant: 112),
+            nutrientsCollectionView.bottomAnchor.constraint(equalTo: ingredientsTableView.topAnchor),
+            nutrientsCollectionView.heightAnchor.constraint(equalToConstant: 100),
             
-            titleIngredientsLabel.topAnchor.constraint(equalTo: nutrientsCollectionView.bottomAnchor),
-            titleIngredientsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
-            titleIngredientsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
-            
-            ingredientsTableView.topAnchor.constraint(equalTo: titleIngredientsLabel.bottomAnchor, constant: 6),
+            ingredientsTableView.topAnchor.constraint(equalTo: nutrientsCollectionView.bottomAnchor),
             ingredientsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             ingredientsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            sourceLinkButton.topAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 18),
-            sourceLinkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            sourceLinkButton.topAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor),
+            sourceLinkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             sourceLinkButton.heightAnchor.constraint(equalToConstant: 36),
             sourceLinkButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
         ])
@@ -238,25 +239,38 @@ final class RecipeDetailsViewController: UIViewController {
 
 extension RecipeDetailsViewController: RecipeDetailsViewInput {
     /// Fills in views with data.
+    ///
     /// - Parameter data: data to fill in.
     func configure(with data: Models.Recipe, isFavourite: Bool) {
         title = data.label
-        recipeImageView.loadImage(for: data.images?.regular?.url)
+        recipeImageView.setImage(by: data.imageData)
+        recipeDescriptionLabel.text = data.description
         
-        nutrientsCollectionViewDataSource.fillInData(data: data.digest, calories: data.calories, weight: data.totalWeight)
+        nutrientsCollectionViewDataSource.fillInData(data: data)
         nutrientsCollectionView.reloadData()
         ingredientsTableViewDataSource.fillInData(data: data.ingredients)
         ingredientsTableView.reloadData()
         
-        recipeDescriptionLabel.text = "Bring colour to your dinner table with our \(data.label ?? Texts.Discover.mockRecipeTitle). Packed with nutrients, it's a satisfying lunch or supper for the family"
-        
         /// Changes `favouriteRecipeButton`'s image according to the provided from function argument.
-        if isFavourite {
-            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.filledHeart, for: .normal)
-        } else {
-            favouriteRecipeButton.setImage(Resources.Images.RecipeDetails.heart, for: .normal)
-        }
+        favouriteRecipeButtonPressed = isFavourite
+        changeFavouriteButtonImage()
+        
         /// We set button's title as the source's name.
         sourceLinkButton.setTitle(data.source, for: .normal)
+    }
+    
+    func displayError(title: String, message: String) {
+        showAlert(title: title, message: message, image: nil)
+    }
+}
+
+extension RecipeDetailsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TitleTableViewHeader.identifier) as? TitleTableViewHeader else {
+            fatalError("Could not cast header in section \(section) to 'TitleTableViewHeader' in 'RecipeDetails' module")
+        }
+        header.configure(title: Texts.RecipeDetails.titleIngredients)
+        return header
     }
 }

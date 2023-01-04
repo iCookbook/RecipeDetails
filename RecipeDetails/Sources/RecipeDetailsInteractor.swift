@@ -9,7 +9,8 @@ import Models
 import Persistence
 
 final class RecipeDetailsInteractor {
-    weak var output: RecipeDetailsInteractorOutput?
+    weak var presenter: RecipeDetailsInteractorOutput?
+    
     /// Data for this module. Recipe to show.
     var recipe: Models.Recipe!
 }
@@ -17,7 +18,7 @@ final class RecipeDetailsInteractor {
 extension RecipeDetailsInteractor: RecipeDetailsInteractorInput {
     /// Provides data to the presenter.
     func provideData() {
-        output?.didProvidedRecipe(recipe, isFavourite: UserDefaults.favouriteRecipes.contains(recipe))
+        presenter?.didProvidedRecipe(recipe, isFavourite: UserDefaults.favouriteRecipes.contains(recipe))
     }
     
     /// Adds recipe to favourites using `UserDefaults`
@@ -36,10 +37,7 @@ extension RecipeDetailsInteractor: RecipeDetailsInteractorInput {
     
     /// Provides recipe's source from interactor
     func provideRecipeSource() {
-        guard let urlString = recipe.url else {
-            // TODO: Implement providing error to presenter
-            return
-        }
-        output?.didProvidedRecipeSource(urlString: urlString)
+        guard let urlString = recipe.url else { return } // do nothing
+        presenter?.didProvidedRecipeSource(urlString: urlString)
     }
 }

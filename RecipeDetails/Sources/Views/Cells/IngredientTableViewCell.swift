@@ -16,6 +16,7 @@ final class IngredientTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = Fonts.medium()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -24,6 +25,7 @@ final class IngredientTableViewCell: UITableViewCell {
         label.font = Fonts.body()
         label.textColor = Colors.secondaryLabel
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -47,13 +49,15 @@ final class IngredientTableViewCell: UITableViewCell {
         
         ingredientMeasureLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         NSLayoutConstraint.activate([
-            ingredientNameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: contentView.layoutMargins.left / 2),
-            ingredientNameLabel.trailingAnchor.constraint(equalTo: ingredientMeasureLabel.leadingAnchor, constant: -contentView.layoutMargins.right / 2),
-            ingredientNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            ingredientNameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            ingredientNameLabel.trailingAnchor.constraint(equalTo: ingredientMeasureLabel.leadingAnchor),
+            ingredientNameLabel.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            ingredientNameLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
             
-            ingredientMeasureLabel.leadingAnchor.constraint(equalTo: ingredientNameLabel.trailingAnchor, constant: contentView.layoutMargins.left / 2),
-            ingredientMeasureLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -contentView.layoutMargins.right / 2),
-            ingredientMeasureLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            ingredientMeasureLabel.leadingAnchor.constraint(equalTo: ingredientNameLabel.trailingAnchor),
+            ingredientMeasureLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            ingredientMeasureLabel.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            ingredientMeasureLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
         ])
     }
     

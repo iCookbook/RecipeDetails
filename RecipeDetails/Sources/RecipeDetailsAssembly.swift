@@ -25,14 +25,16 @@ public final class RecipeDetailsAssembly {
         let router = RecipeDetailsRouter()
         let interactor = RecipeDetailsInteractor()
         let presenter = RecipeDetailsPresenter(router: router, interactor: interactor)
-        let viewController = RecipeDetailsViewController(output: presenter)
+        let viewController = RecipeDetailsViewController(presenter: presenter)
         
         presenter.view = viewController
         presenter.moduleOutput = context.moduleOutput
         
-        interactor.output = presenter
+        interactor.presenter = presenter
         interactor.recipe = context.recipe
+        
         router.viewController = viewController
+        router.presenter = presenter
         
         return RecipeDetailsAssembly(view: viewController, input: presenter, router: router)
     }

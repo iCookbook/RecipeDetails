@@ -6,6 +6,7 @@
 //  
 
 import Models
+import Resources
 
 final class RecipeDetailsPresenter {
     weak var view: RecipeDetailsViewInput?
@@ -29,19 +30,17 @@ extension RecipeDetailsPresenter: RecipeDetailsModuleInput {
 
 extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
     
-    func requestData() {
+    /// Called in the end of view's `viewDidLoad` method.
+    func viewDidLoad() {
         interactor.provideData()
     }
     
     /// Handles tapping on the favourite button.
     /// - Parameter flag: Defines whether favourite button was pressed or not.
     func favouriteButtonTapped(flag: Bool) {
-        if flag {
-            /// If it was already pressed, we remove it.
-            interactor.removeRecipeFromFavourites()
-        } else {
-            /// If it was not pressed, we add it to an array.
-            interactor.addRecipeToFavourites()
+        DispatchQueue.global(qos: .background).async {
+            /// If it was pressed (true), we remove it. If it was de-pressed (false), we add it to an array.
+            flag ? self.interactor.addRecipeToFavourites() : self.interactor.removeRecipeFromFavourites()
         }
     }
     
@@ -52,18 +51,26 @@ extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
 }
 
 extension RecipeDetailsPresenter: RecipeDetailsInteractorOutput {
+    /// Provides data from interactor.
+    ///
+    /// - Parameters:
+    ///   - recipe: `Recipe` instance provided from the interactor
+    ///   - isFavourite: defines whether provided recipe is favourite or not.
     func didProvidedRecipe(_ recipe: Recipe, isFavourite: Bool) {
         view?.configure(with: recipe, isFavourite: isFavourite)
     }
     
     /// Provides the link from interactor.
+    ///
     /// - Parameter urlString: link to the recipe.
     func didProvidedRecipeSource(urlString: String) {
-        
         guard let url = URL(string: urlString) else {
-            // TODO: Implement opening alert
+            view?.displayError(title: Texts.Errors.oops, message: Texts.Errors.noRecipeSource)
             return
         }
         router.openWebRecipe(by: url)
     }
+}
+
+extension RecipeDetailsPresenter: RecipeDetailsRouterOutput {
 }
