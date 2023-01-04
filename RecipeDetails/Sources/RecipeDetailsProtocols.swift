@@ -16,6 +16,7 @@ public protocol RecipeDetailsModuleOutput: AnyObject {
 
 protocol RecipeDetailsViewInput: AnyObject {
     func configure(with data: Recipe, isFavourite: Bool)
+    func displayError(title: String, message: String)
 }
 
 protocol RecipeDetailsViewOutput: AnyObject {

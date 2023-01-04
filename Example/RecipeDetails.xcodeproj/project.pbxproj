@@ -24,7 +24,7 @@
 		D5FC939DFE3CEB81EAFB4CFB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		E981EE8B4BE5C42F8B18BC9B /* Pods-RecipeDetails_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RecipeDetails_Example.release.xcconfig"; path = "Target Support Files/Pods-RecipeDetails_Example/Pods-RecipeDetails_Example.release.xcconfig"; sourceTree = "<group>"; };
 		F0AC9A5C2916C8EB00940FDA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		FF1C0D6FB7535A07E0811BDE /* RecipeDetails.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = RecipeDetails.podspec; path = ../RecipeDetails.podspec; sourceTree = "<group>"; };
+		FF1C0D6FB7535A07E0811BDE /* RecipeDetails.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = RecipeDetails.podspec; path = ../RecipeDetails.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

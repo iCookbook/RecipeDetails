@@ -10,6 +10,7 @@ import Persistence
 
 final class RecipeDetailsInteractor {
     weak var presenter: RecipeDetailsInteractorOutput?
+    
     /// Data for this module. Recipe to show.
     var recipe: Models.Recipe!
 }
