@@ -18,7 +18,7 @@ final class RecipeDetailsInteractor {
 extension RecipeDetailsInteractor: RecipeDetailsInteractorInput {
     /// Provides data to the presenter.
     func provideData() {
-        presenter?.didProvidedRecipe(recipe, isFavourite: UserDefaults.favouriteRecipes.contains(recipe))
+        presenter?.didProvideRecipe(recipe, isFavourite: UserDefaults.favouriteRecipes.contains(recipe))
     }
     
     /// Adds recipe to favourites using `UserDefaults`
@@ -38,6 +38,6 @@ extension RecipeDetailsInteractor: RecipeDetailsInteractorInput {
     /// Provides recipe's source from interactor
     func provideRecipeSource() {
         guard let urlString = recipe.url else { return } // do nothing
-        presenter?.didProvidedRecipeSource(urlString: urlString)
+        presenter?.didProvideRecipeSource(urlString: urlString)
     }
 }

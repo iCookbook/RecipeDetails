@@ -73,7 +73,7 @@ class RecipeDetailsPresenterTests: XCTestCase {
         presenter.view = view
         let isFavourite = true
         
-        presenter.didProvidedRecipe(mockRecipe, isFavourite: isFavourite)
+        presenter.didProvideRecipe(mockRecipe, isFavourite: isFavourite)
         
         XCTAssertIdentical(view.recipeToConfigure, mockRecipe)
         XCTAssertEqual(view.isRecipeFavourite, isFavourite)
@@ -84,7 +84,7 @@ class RecipeDetailsPresenterTests: XCTestCase {
         presenter.view = view
         let isFavourite = false
         
-        presenter.didProvidedRecipe(mockRecipe, isFavourite: isFavourite)
+        presenter.didProvideRecipe(mockRecipe, isFavourite: isFavourite)
         
         XCTAssertIdentical(view.recipeToConfigure, mockRecipe)
         XCTAssertEqual(view.isRecipeFavourite, isFavourite)
@@ -97,7 +97,7 @@ class RecipeDetailsPresenterTests: XCTestCase {
         presenter.view = view
         let link = "https://example.com"
         
-        presenter.didProvidedRecipeSource(urlString: link)
+        presenter.didProvideRecipeSource(urlString: link)
         
         XCTAssertEqual(router.urlForWebRecipe, URL(string: link)!)
         XCTAssertNotNil(router.didOpenWebRecipe)
@@ -113,7 +113,7 @@ class RecipeDetailsPresenterTests: XCTestCase {
         view = SpyRecipeDetailsView()
         presenter.view = view
         
-        presenter.didProvidedRecipeSource(urlString: "")
+        presenter.didProvideRecipeSource(urlString: "")
         
         XCTAssertNil(router.didOpenWebRecipe)
         XCTAssertNil(router.urlForWebRecipe)
@@ -123,23 +123,12 @@ class RecipeDetailsPresenterTests: XCTestCase {
         XCTAssertNotNil(view.errorMessageToDisplay)
         XCTAssertEqual(view.errorMessageToDisplay, Texts.Errors.noRecipeSource)
     }
+    
+    func testWebRecipeButtonTapped() throws {
+        interactor = SpyRecipeDetailsInteractor()
+        presenter = RecipeDetailsPresenter(router: mockRouter, interactor: interactor)
+        presenter.webRecipeButtonTapped()
+        
+        XCTAssertTrue(interactor.didProvideRecipeSource)
+    }
 }
-
-/*
- extension RecipeDetailsPresenter: RecipeDetailsViewOutput {
-     
-     /// Handles tapping on the favourite button.
-     /// - Parameter flag: Defines whether favourite button was pressed or not.
-     func favouriteButtonTapped(flag: Bool) {
-         DispatchQueue.global(qos: .background).async {
-             /// If it was pressed (true), we remove it. If it was de-pressed (false), we add it to an array.
-             flag ? self.interactor.addRecipeToFavourites() : self.interactor.removeRecipeFromFavourites()
-         }
-     }
-     
-     /// Asks interactor for link to open in web.
-     func webRecipeButtonTapped() {
-         interactor.provideRecipeSource()
-     }
- }
-*/
