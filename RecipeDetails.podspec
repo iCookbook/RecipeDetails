@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'RecipeDetails'
-  s.version          = '1.5.0'
+  s.version          = '1.6.0'
   s.summary          = '\'RecipeDetails\' module.'
   s.homepage         = 'https://github.com/iCookbook/RecipeDetails'
   s.screenshots     = 'https://user-images.githubusercontent.com/60363270/200943946-6b736b4d-5516-4919-8dab-6abf6891488e.png',
