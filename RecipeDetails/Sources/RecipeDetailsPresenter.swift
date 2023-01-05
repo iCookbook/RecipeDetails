@@ -56,14 +56,14 @@ extension RecipeDetailsPresenter: RecipeDetailsInteractorOutput {
     /// - Parameters:
     ///   - recipe: `Recipe` instance provided from the interactor
     ///   - isFavourite: defines whether provided recipe is favourite or not.
-    func didProvidedRecipe(_ recipe: Recipe, isFavourite: Bool) {
+    func didProvideRecipe(_ recipe: Recipe, isFavourite: Bool) {
         view?.configure(with: recipe, isFavourite: isFavourite)
     }
     
     /// Provides the link from interactor.
     ///
     /// - Parameter urlString: link to the recipe.
-    func didProvidedRecipeSource(urlString: String) {
+    func didProvideRecipeSource(urlString: String) {
         guard let url = URL(string: urlString) else {
             view?.displayError(title: Texts.Errors.oops, message: Texts.Errors.noRecipeSource)
             return

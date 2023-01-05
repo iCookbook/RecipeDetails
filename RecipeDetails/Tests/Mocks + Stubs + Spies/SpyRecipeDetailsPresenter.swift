@@ -14,12 +14,12 @@ class SpyRecipeDetailsPresenter: RecipeDetailsInteractorOutput {
     var isFavourite: Bool!
     var urlString: String!
     
-    func didProvidedRecipe(_ recipe: Recipe, isFavourite: Bool) {
+    func didProvideRecipe(_ recipe: Recipe, isFavourite: Bool) {
         self.recipe = recipe
         self.isFavourite = isFavourite
     }
     
-    func didProvidedRecipeSource(urlString: String) {
+    func didProvideRecipeSource(urlString: String) {
         self.urlString = urlString
     }
 }

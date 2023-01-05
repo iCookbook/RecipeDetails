@@ -33,8 +33,8 @@ protocol RecipeDetailsInteractorInput: AnyObject {
 }
 
 protocol RecipeDetailsInteractorOutput: AnyObject {
-    func didProvidedRecipe(_ recipe: Recipe, isFavourite: Bool)
-    func didProvidedRecipeSource(urlString: String)
+    func didProvideRecipe(_ recipe: Recipe, isFavourite: Bool)
+    func didProvideRecipeSource(urlString: String)
 }
 
 protocol RecipeDetailsRouterInput: AnyObject {
