@@ -4,22 +4,27 @@ Module that is shown after user tapps on a recipe
 
 ## To set up
 
-This module could be opened in [Discover](https://github.com/iCookbook/Discover) and [Search](https://github.com/iCookbook/Search) modules. 
-
 It requires `Recipe` instance that must be provided inside `RecipeDetailsContext`.
+
+## Use cases
+
+There is three ways to open this module after tapping on recipes from these modules: 
+
+- [Discover](https://github.com/iCookbook/Discover)
+- [Search](https://github.com/iCookbook/Search)
+- [Personal](https://github.com/iCookbook/Personal)
 
 ## Dependencies
 
 This module has 4 dependencies:
 
-- `CommonUI` for some reasons:
+- [CommonUI](https://github.com/iCookbook/CommonUI) for some reasons:
     * Image loader in `UIImageView`
-    * Usage `WebViewController` class
     * Identifiers of the cells
-    * RecipeDetailsViewController requires to import it's ancestor
-- `Resources` for access to resources of the application
-- `Models` to use `Recipe` model
-- `Persistence` to save favourites recipes
+    * `RecipeDetailsViewController` requires to import it's ancestor
+- [Resources](https://github.com/iCookbook/Resources) for access to resources of the application
+- [Models](https://github.com/iCookbook/Models) to use `Recipe` model
+- [Persistence](https://github.com/iCookbook/Persistence) to save favourites recipes
 
 ## Screenshots
 
