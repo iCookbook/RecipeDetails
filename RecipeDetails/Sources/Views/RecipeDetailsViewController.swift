@@ -106,7 +106,6 @@ final class RecipeDetailsViewController: UIViewController {
     
     private lazy var sourceLinkButton: UIButton = {
         let button = UIButton()
-        // TODO: Set tint's color of the application as background color
         button.backgroundColor = Colors.appColor
         button.setTitleColor(UIColor.white, for: .normal)
         button.addTarget(self, action: #selector(sourceLinkButtonTapped), for: .touchUpInside)
