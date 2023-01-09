@@ -6,6 +6,7 @@
 //  
 
 import UIKit
+import Models
 
 public final class RecipeDetailsAssembly {
     
@@ -20,7 +21,7 @@ public final class RecipeDetailsAssembly {
     
     // MARK: - Public Methods
     
-    public static func assemble(with context: RecipeDetailsDependenciesProtocol) -> RecipeDetailsAssembly {
+    public static func assemble(with context: RecipeDetailsContext) -> RecipeDetailsAssembly {
         let router = RecipeDetailsRouter()
         let interactor = RecipeDetailsInteractor()
         let presenter = RecipeDetailsPresenter(router: router, interactor: interactor)
@@ -30,7 +31,7 @@ public final class RecipeDetailsAssembly {
         presenter.moduleOutput = context.moduleOutput
         
         interactor.presenter = presenter
-        interactor.recipe = context.dataModel
+        interactor.recipe = context.recipe
         
         router.viewController = viewController
         router.presenter = presenter
@@ -44,5 +45,15 @@ public final class RecipeDetailsAssembly {
         self.viewController = view
         self.input = input
         self.router = router
+    }
+}
+
+public struct RecipeDetailsContext {
+    weak var moduleOutput: RecipeDetailsModuleOutput?
+    let recipe: Recipe
+    
+    public init(moduleOutput: RecipeDetailsModuleOutput?, recipe: Recipe) {
+        self.moduleOutput = moduleOutput
+        self.recipe = recipe
     }
 }

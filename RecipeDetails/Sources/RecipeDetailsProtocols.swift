@@ -7,11 +7,6 @@
 
 import Models
 
-public protocol RecipeDetailsDependenciesProtocol {
-    var moduleOutput: RecipeDetailsModuleOutput? { get set }
-    var dataModel: Recipe { get }
-}
-
 public protocol RecipeDetailsModuleInput {
     var moduleOutput: RecipeDetailsModuleOutput? { get }
 }
